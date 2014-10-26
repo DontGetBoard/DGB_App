@@ -1,0 +1,61 @@
+<!-- WRAPPER -->
+<div class="row">
+<div class="large-12 columns text-center" ng-controller="GamesCtrl">
+
+	<h2>Your games'list</h2>
+
+	<div class="button-bar centered">
+	  <ul class="button-group radius isotope-filter button-no-padding" data-sort-id="isotope-list" data-option-key="filter">
+	    <li data-option-value="*"><a href="#" class="small button secondary">All</a></li>
+	    <li data-option-value=".board"><a href="#" class="small button secondary">Board</a></li>
+		<li data-option-value=".cards"><a href="#" class="small button secondary">Cards</a></li>
+	  </ul>
+	</div>
+
+
+	<div class="row">
+		<ul id="height-equalize" class="sort-destination isotope no-ul-margin" data-sort-id="isotope-list">
+
+			<div ng-repeat="one_game in games">
+				<li class="isotope-item large-4 medium-6 small-12 columns {{ one_game.type }}"><!-- item -->
+					<div class="item-box">
+						<span class="fig equalizea">
+							<a class="item-hover" href="#games/{{$index}}">
+								<span class="overlay color2"></span>
+								<span class="inner">
+									<span class="block fa fa-plus fsize20"></span>
+									{{ one_game.title }}<br />
+									<img src="assets/images/icons/clock.svg" class="icon-image icon-image-left" alt="play time">{{ one_game.time }} m - {{ one_game.min_players }} to {{ one_game.max_players }}<img src="assets/images/icons/players.svg" class="icon-image icon-image-right" alt="number of players">
+								</span>
+							</a>
+							<img ng-src="./assets/images/games/{{one_game.picture}}" width="260" height="260" alt="{{ one_game.title }}">
+						</span>
+					</div>
+				</li>
+			</div>
+			<div>
+				<li class="isotope-item large-4 medium-4 columns cards board"><!-- item -->
+					<div class="item-box">
+						<span class="fig equalizea">
+							<a class="item-hover" href="#games/add">
+								<span class="overlay color2"></span>
+								<span class="inner">
+									<span class="block fa fa-plus fsize20"></span>
+									<p class="add-a-game">+</p>
+								</span>
+							</a>
+							<img class="img-responsive" src="assets/images/addagame.png" width="260" height="260" alt="">
+						</span>
+					</div>
+				</li>
+			</div>
+		</ul>
+
+	</div><!-- /.masonry-container -->
+
+</div>
+
+</div>
+
+<!-- /WRAPPER -->
+<script type="text/javascript" src="./assets/js/games.js"></script>
