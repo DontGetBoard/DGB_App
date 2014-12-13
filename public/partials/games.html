@@ -16,19 +16,19 @@
 	<div class="row">
 		<ul id="height-equalize" class="sort-destination isotope no-ul-margin" data-sort-id="isotope-list">
 
-			<div ng-repeat="one_game in games">
+			<div ng-repeat="one_game in games | orderBy: '-upvotes'">
 				<li class="isotope-item large-4 medium-6 small-12 columns {{ one_game.type }}"><!-- item -->
 					<div class="item-box">
 						<span class="fig equalizea">
-							<a class="item-hover" href="#games/{{$index}}">
+							<a class="item-hover" href="#games/{{ one_game._id}}">
 								<span class="overlay color2"></span>
 								<span class="inner">
 									<span class="block fa fa-plus fsize20"></span>
 									{{ one_game.title }}<br />
-									<img src="assets/images/icons/clock.svg" class="icon-image icon-image-left" alt="play time">{{ one_game.time }} m - {{ one_game.min_players }} to {{ one_game.max_players }}<img src="assets/images/icons/players.svg" class="icon-image icon-image-right" alt="number of players">
+									<img src="./images/icons/clock.svg" class="icon-image icon-image-left" alt="play time">{{ one_game.time }} m - {{ one_game.min_players }} to {{ one_game.max_players }}<img src="./images/icons/players.svg" class="icon-image icon-image-right" alt="number of players">
 								</span>
 							</a>
-							<img ng-src="./assets/images/games/{{one_game.picture}}" width="260" height="260" alt="{{ one_game.title }}">
+							<img ng-src="./images/games/{{one_game.picture}}" width="260" height="260" alt="{{ one_game.title }}">
 						</span>
 					</div>
 				</li>
@@ -44,7 +44,7 @@
 									<p class="add-a-game">+</p>
 								</span>
 							</a>
-							<img class="img-responsive" src="assets/images/addagame.png" width="260" height="260" alt="">
+							<img class="img-responsive" src="./images/addagame.png" width="260" height="260" alt="">
 						</span>
 					</div>
 				</li>
@@ -58,4 +58,4 @@
 </div>
 
 <!-- /WRAPPER -->
-<script type="text/javascript" src="./assets/js/games.js"></script>
+<script type="text/javascript" src="./javascripts/games.js"></script>
