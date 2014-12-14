@@ -17,7 +17,6 @@ if (app.get('env') === 'development') {
 }else{
     mongo_url = process.env.OPENSHIFT_MONGODB_DB_URL;
     mongo_app_name = process.env.OPENSHIFT_APP_NAME;
-    console.log(mongo_url+mongo_app_name);
     mongoose.connect(mongo_url+mongo_app_name);
 }
 require('./models/Games');
@@ -71,3 +70,14 @@ app.use(function(err, req, res, next) {
 
 
 module.exports = app;
+
+// Requires meanio
+var mean = require('meanio');
+
+// Creates and serves mean application
+mean.serve({ /*options placeholder*/ }, function(app, config) {
+  console.log('Mean app started on port ' + config.http.port + ' (' + process.env.NODE_ENV + ')');
+  if(config.https && config.https.port){
+    console.log('Mean secure app started on port ' + config.https.port + ' (' + process.env.NODE_ENV + ')');
+  }
+});
