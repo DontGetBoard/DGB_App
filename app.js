@@ -10,6 +10,8 @@ var mongoose = require('mongoose');
 
 // All MongoDB Related Stuff
 
+var app = express();
+
 if (app.get('env') === 'development') {
     mongoose.connect('mongodb://localhost/dontgetboard');
 }else{
@@ -18,8 +20,6 @@ if (app.get('env') === 'development') {
 require('./models/Games');
 
 var routes = require('./routes/index');
-
-var app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
