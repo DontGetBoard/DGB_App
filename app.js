@@ -1,3 +1,5 @@
+require('newrelic');
+
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
@@ -7,7 +9,12 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 
 // All MongoDB Related Stuff
-mongoose.connect('mongodb://localhost/dontgetboard');
+
+if (app.get('env') === 'development') {
+    mongoose.connect('mongodb://localhost/dontgetboard');
+}else{
+    mongoose.connect('mongodb://$OPENSHIFT_MONGODB_DB_USERNAME:$OPENSHIFT_MONGODB_DB_PASSWORD@$OPENSHIFT_MONGODB_DB_HOST:$OPENSHIFT_MONGODB_DB_PORT/app');
+}
 require('./models/Games');
 
 var routes = require('./routes/index');
