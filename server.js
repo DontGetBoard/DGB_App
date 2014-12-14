@@ -15,7 +15,7 @@ var app = express();
 if (app.get('env') === 'development') {
     mongoose.connect('mongodb://localhost/dontgetboard');
 }else{
-    mongoose.connect('mongodb://$OPENSHIFT_MONGODB_DB_HOST:$OPENSHIFT_MONGODB_DB_PORT/app');
+    mongoose.connect('$OPENSHIFT_MONGODB_DB_URL/app');
 }
 require('./models/Games');
 
