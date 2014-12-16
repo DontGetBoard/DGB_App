@@ -6,6 +6,7 @@ var bcrypt   = require('bcrypt-nodejs');
 // define the schema for our user model
 var userSchema = mongoose.Schema({
 
+    avatar           : String,
     local            : {
         username     : String,
         email        : String,

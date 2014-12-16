@@ -7,7 +7,7 @@ var LocalStrategy   = require('passport-local').Strategy;
 var User            = require('../models/Users');
 
 // expose this function to our app using module.exports
-module.exports = function(passport,mailgun,mc) {
+module.exports = function(passport,mailgun,mc,gravatar) {
 
     // =========================================================================
     // passport session setup ==================================================
@@ -140,6 +140,7 @@ module.exports = function(passport,mailgun,mc) {
                 return done(null, false, req.flash('loginMessage', 'Oops! Wrong password.')); // create the loginMessage and save it to session as flashdata
 
             // all is well, return successful user
+            req.flash('userAvatar', gravatar.imageUrl(user.local.email))
             return done(null, user);
         });
 

@@ -5,10 +5,13 @@ var passport = require('passport');
 var User = mongoose.model('User');
 var Game = mongoose.model('Game');
 
+var avatar;
+
 /* GET home page. */
 router.get('/', function(req, res) {
   if(req.isAuthenticated()){
-    res.render('index', {authenticated: 1, user: req.user }); 
+    avatar = req.flash('userAvatar');
+    res.render('index', {authenticated: 1, user: req.user, avatar: avatar }); 
   } else {
     res.render('index', {authenticated: 0 }); 
   }
@@ -17,7 +20,7 @@ router.get('/', function(req, res) {
 
 /* GET profile page. */
 router.get('/profile', isLoggedIn, function(req, res) {
-  res.render('profile');
+  res.render('profile', {user: req.user, avatar: avatar});
 });
 
 /* GET games page. */

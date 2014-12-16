@@ -13,6 +13,7 @@ var session         = require('express-session');
 var mailgun         = require('mailgun-js')({apiKey: process.env.DGB_MAILGUN_API_KEY, domain: process.env.DGB_MAILGUN_DOMAIN});
 var mcAPI           = require('mailchimp-api');
 var mc              = new mcAPI.Mailchimp(process.env.DGB_MAILCHIMP_API_KEY);
+var gravatar        = require('nodejs-gravatar');
 
 // All MongoDB Related Stuff
 var app = express();
@@ -27,7 +28,7 @@ if (app.get('env') === 'development') {
 require('./models/Games');
 require('./models/Users');
 
-require('./config/passport')(passport,mailgun,mc); // pass passport for configuration
+require('./config/passport')(passport,mailgun,mc,gravatar); // pass passport for configuration
 
 var routes = require('./routes/index');
 
