@@ -7,7 +7,7 @@ var LocalStrategy   = require('passport-local').Strategy;
 var User            = require('../models/Users');
 
 // expose this function to our app using module.exports
-module.exports = function(passport,mailgun) {
+module.exports = function(passport,mailgun,mc) {
 
     // =========================================================================
     // passport session setup ==================================================
@@ -71,6 +71,7 @@ module.exports = function(passport,mailgun) {
                     if (err)
                         throw err;
 
+                    // Sending Welcome Email
                     var data = {
                       from: 'Don\'t get board <no-reply@mg.dontgetboard.net>',
                       to: email,
@@ -82,6 +83,23 @@ module.exports = function(passport,mailgun) {
                       console.log(body);
                       console.log(error);
                     });
+
+                    // Subscribe to Newsletter
+                    var mcReq = {
+                        id: process.env.DGB_MAILCHIMP_LIST_ID,
+                        email: { email: email },
+                        merge_vars: {
+                            UNAME: req.body.username
+                        }
+                    };
+
+                    // submit subscription request to Mailchimp
+                    mc.lists.subscribe(mcReq, function(data) {
+                        console.log(data);
+                    }, function(error) {
+                        console.log(error);
+                    });
+
                     return done(null, newUser);
                 });
             }

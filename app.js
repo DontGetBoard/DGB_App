@@ -1,16 +1,18 @@
 require('newrelic');
 
-var express = require('express');
-var path = require('path');
-var favicon = require('serve-favicon');
-var logger = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
-var mongoose = require('mongoose');
-var passport = require('passport');
-var flash    = require('connect-flash');
-var session      = require('express-session');
-var mailgun = require('mailgun-js')({apiKey: process.env.DGB_MAILGUN_API_KEY, domain: process.env.DGB_MAILGUN_DOMAIN});
+var express         = require('express');
+var path            = require('path');
+var favicon         = require('serve-favicon');
+var logger          = require('morgan');
+var cookieParser    = require('cookie-parser');
+var bodyParser      = require('body-parser');
+var mongoose        = require('mongoose');
+var passport        = require('passport');
+var flash           = require('connect-flash');
+var session         = require('express-session');
+var mailgun         = require('mailgun-js')({apiKey: process.env.DGB_MAILGUN_API_KEY, domain: process.env.DGB_MAILGUN_DOMAIN});
+var mcAPI           = require('mailchimp-api');
+var mc              = new mcAPI.Mailchimp(process.env.DGB_MAILCHIMP_API_KEY);
 
 // All MongoDB Related Stuff
 var app = express();
@@ -25,7 +27,7 @@ if (app.get('env') === 'development') {
 require('./models/Games');
 require('./models/Users');
 
-require('./config/passport')(passport,mailgun); // pass passport for configuration
+require('./config/passport')(passport,mailgun,mc); // pass passport for configuration
 
 var routes = require('./routes/index');
 
