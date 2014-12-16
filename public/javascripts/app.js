@@ -7,7 +7,7 @@ app.config(function($animateProvider) {
 app.config(function($routeProvider, $httpProvider){
     $routeProvider
         .when('/', {templateUrl: 'partials/home.html', controller: HomeCtrl})
-        .when('/profile', {templateUrl: 'partials/profile.html', controller: ProfileCtrl})
+        .when('/profile', {templateUrl: '/profile', controller: ProfileCtrl})
         .when('/games', {templateUrl: 'partials/games.html'})
         .when('/games/add', {templateUrl: 'partials/games_add.html'})
         .when('/games/:refId', {templateUrl: 'partials/games_single.html', controller: 'UniqueGameCtrl'})
@@ -15,7 +15,8 @@ app.config(function($routeProvider, $httpProvider){
         .when('/nights', {templateUrl: 'partials/nights.html', controller: NightsCtrl})
         .when('/contibute', {templateUrl: 'partials/contibute.html', controller: ContributeCtrl})
         .when('/contact', {templateUrl: 'partials/contact.html', controller: ContactCtrl})
-        .when('/logout', {templateUrl: 'partials/logout.html', controller: LogOutCtrl})
+        .when('/signup', {templateUrl: '/signup'})
+        .when('/login', {templateUrl: '/login'})
         .otherwise({redirectTo: '/'});
     delete $httpProvider.defaults.headers.common['X-Requested-With'];
     delete $httpProvider.defaults.headers.common['Content-Type'];
