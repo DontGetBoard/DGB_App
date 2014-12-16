@@ -7,7 +7,7 @@ var LocalStrategy   = require('passport-local').Strategy;
 var User            = require('../models/Users');
 
 // expose this function to our app using module.exports
-module.exports = function(passport) {
+module.exports = function(passport,mailgun) {
 
     // =========================================================================
     // passport session setup ==================================================
@@ -70,6 +70,18 @@ module.exports = function(passport) {
                 newUser.save(function(err) {
                     if (err)
                         throw err;
+
+                    var data = {
+                      from: 'Don\'t get board <no-reply@mg.dontgetboard.net>',
+                      to: email,
+                      subject: 'Hello',
+                      text: 'Welcome to DGB!'
+                    };
+
+                    mailgun.messages().send(data, function (error, body) {
+                      console.log(body);
+                      console.log(error);
+                    });
                     return done(null, newUser);
                 });
             }

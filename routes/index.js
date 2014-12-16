@@ -17,12 +17,22 @@ router.get('/', function(req, res) {
 
 /* GET profile page. */
 router.get('/profile', isLoggedIn, function(req, res) {
-  res.render('profile', { title: 'Express' });
+  res.render('profile');
+});
+
+/* GET games page. */
+router.get('/games', isLoggedIn, function(req, res) {
+  res.render('games');
+});
+
+/* GET nights page. */
+router.get('/nights', isLoggedIn, function(req, res) {
+  res.render('nights');
 });
 
 
 //
-// Login Roots
+// Login Routes
 //
 
 // GET login page
@@ -58,11 +68,12 @@ router.get('/logout', function(req, res) {
 });
 
 
-
-
+//
+// API
+//
 
 /* GET Games JSON. */
-router.get('/games', function(req, res, next) {
+router.get('/api/games', function(req, res, next) {
   Game.find(function(err, games){
     if(err){ return next(err); }
 
@@ -83,12 +94,12 @@ router.param('game', function(req, res, next, id) {
   });
 });
 
-// /* GET Post by ID JSON. */
-// router.get('/games/:game', function(req, res) {
-//   //req.post.populate('comments', function(err, post) {
-//     res.json(req.game);
-//   //});
-// });
+/* GET Game by ID JSON. */
+router.get('/api/games/:game', function(req, res) {
+  //req.post.populate('comments', function(err, post) {
+    res.json(req.game);
+  //});
+});
 
 // Function to check if a user is loggedIn
 function isLoggedIn(req, res, next) {

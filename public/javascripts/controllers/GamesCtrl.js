@@ -10,7 +10,7 @@ app.factory('Games', function($http, $q){
             if (games.games !== false){
                 deferred.resolve(games.games);
             }else{
-                $http({method: 'GET', url: './games'}).
+                $http({method: 'GET', url: './api/games'}).
                     success(function(data, status, headers, config) {
                         games.games = data;
                         deferred.resolve(games.games);
@@ -23,7 +23,7 @@ app.factory('Games', function($http, $q){
         },
         getOneGame : function(id){
             var deferred = $q.defer();
-            $http({method: 'GET', url: './games/'+id}).
+            $http({method: 'GET', url: './api/games/'+id}).
                 success(function(data, status, headers, config) {
                     games.oneGame = data;
                     deferred.resolve(games.oneGame);

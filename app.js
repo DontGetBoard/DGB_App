@@ -10,7 +10,7 @@ var mongoose = require('mongoose');
 var passport = require('passport');
 var flash    = require('connect-flash');
 var session      = require('express-session');
-
+var mailgun = require('mailgun-js')({apiKey: process.env.DGB_MAILGUN_API_KEY, domain: process.env.DGB_MAILGUN_DOMAIN});
 
 // All MongoDB Related Stuff
 var app = express();
@@ -25,7 +25,7 @@ if (app.get('env') === 'development') {
 require('./models/Games');
 require('./models/Users');
 
-require('./config/passport')(passport); // pass passport for configuration
+require('./config/passport')(passport,mailgun); // pass passport for configuration
 
 var routes = require('./routes/index');
 
@@ -41,8 +41,10 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+console.log(process.env);
+
 // required for passport
-app.use(session({ secret: 'yUUQEwQ7umFdY7GfkLsvCtHdb' })); // session secret
+app.use(session({ secret: process.env.DGB_PASSPORT_SECRET })); // session secret
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 app.use(flash()); // use connect-flash for flash messages stored in session

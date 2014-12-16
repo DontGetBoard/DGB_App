@@ -8,11 +8,11 @@ app.config(function($routeProvider, $httpProvider){
     $routeProvider
         .when('/', {templateUrl: 'partials/home.html', controller: HomeCtrl})
         .when('/profile', {templateUrl: '/profile', controller: ProfileCtrl})
-        .when('/games', {templateUrl: 'partials/games.html'})
+        .when('/games', {templateUrl: '/games'})
         .when('/games/add', {templateUrl: 'partials/games_add.html'})
         .when('/games/:refId', {templateUrl: 'partials/games_single.html', controller: 'UniqueGameCtrl'})
         .when('/friends', {templateUrl: 'partials/friends.html', controller: FriendsCtrl})
-        .when('/nights', {templateUrl: 'partials/nights.html', controller: NightsCtrl})
+        .when('/nights', {templateUrl: '/nights', controller: NightsCtrl})
         .when('/contibute', {templateUrl: 'partials/contibute.html', controller: ContributeCtrl})
         .when('/contact', {templateUrl: 'partials/contact.html', controller: ContactCtrl})
         .when('/signup', {templateUrl: '/signup'})
