@@ -19,9 +19,58 @@
                       
                                                
                                                
-                                               
-Ressources 
-----------
+Requirements
+------------
+
+You must have `npm` Setup and `mongod` to run this application.
+
+
+Environments Variables
+----------------------
+
+- DGB_APP_NEW_RELIC_KEY => New Relic Api Key
+- DGB_MAILGUN_API_KEY => MailGun API Key
+- DGB_MAILGUN_DOMAIN => MailGun API Domain
+- DGB_PASSPORT_SECRET => Secret Passphrase to generate Hashes
+
+
+Installation
+------------                                               
+
+Setup the application with:
+
+  npm install
+  
+Run MangoDB to host the database:
+
+  mangod
+  
+Launch the application:
+
+  npm start
+  
+then browse to `http://localhost:3000`
+
+
+Routes
+------
+
+  GET   /login
+  POST  /login
+  GET   /signup
+  POST  /signup
+  GET   /logout
+  GET   /bugs     (must be auth)
+  GET   /bugs/new   (must be auth)
+  POST  /bugs/new   (must be auth)
+  GET   /bug/:id/assign (must be auth)
+  POST  /bug/:id/assign (must be auth)
+  GET   /bug/:id/close  (must be auth)
+  POST  /bug/:id/close  (must be auth)
+
+
+Thanks To 
+---------
 Icons: 
 
 - players.svg => [Daniel Bruce](http://www.flaticon.com/free-icon/user-group_3671)
