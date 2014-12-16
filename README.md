@@ -22,7 +22,7 @@
 Requirements
 ------------
 
-You must have `npm` Setup and `mongod` to run this application.
+You must have `npm` and `mongod` to run this application.
 
 
 Environments Variables
@@ -39,15 +39,15 @@ Installation
 
 Setup the application with:
 
-  npm install
+    npm install
   
 Run MangoDB to host the database:
 
-  mangod
+    mangod
   
 Launch the application:
 
-  npm start
+    npm start
   
 then browse to `http://localhost:3000`
 
@@ -55,19 +55,34 @@ then browse to `http://localhost:3000`
 Routes
 ------
 
-  GET   /login
-  POST  /login
-  GET   /signup
-  POST  /signup
-  GET   /logout
-  GET   /bugs     (must be auth)
-  GET   /bugs/new   (must be auth)
-  POST  /bugs/new   (must be auth)
-  GET   /bug/:id/assign (must be auth)
-  POST  /bug/:id/assign (must be auth)
-  GET   /bug/:id/close  (must be auth)
-  POST  /bug/:id/close  (must be auth)
+    GET   /
+    GET   /login
+    POST  /login
+    GET   /signup
+    POST  /signup
+    GET   /logout       (must be auth)
 
+
+Dependencies
+------------
+
+    "dependencies": {
+      "bcrypt-nodejs": "latest",
+      "body-parser": "~1.8.1",
+      "connect-flash": "~0.1.1",
+      "cookie-parser": "~1.3.3",
+      "debug": "~2.0.0",
+      "ejs": "~0.8.5",
+      "express": "~4.9.0",
+      "express-session": "~1.0.0",
+      "mailgun-js": "^0.6.7",
+      "mongoose": "^3.8.19",
+      "morgan": "~1.3.0",
+      "newrelic": "^1.14.2",
+      "passport": "~0.1.17",
+      "passport-local": "~0.1.6",
+      "serve-favicon": "~2.1.3"
+    }
 
 Thanks To 
 ---------
