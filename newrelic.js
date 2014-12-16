@@ -20,5 +20,8 @@ exports.config = {
      * production applications.
      */
     level : 'info'
+  },
+  error_collector : {
+    enabled: true
   }
 };
