@@ -49,7 +49,7 @@
                         <ul class="right">
                             <li class="active"><a href="#nights">Organize a night!</a></li>
                           <li class="has-dropdown">
-                            <a href="#"><%= user.local.username %></a>
+                            <a href="#"><img src="<%= user.avatar %>" alt="Avatar" class="round-avatar"><%= user.local.username %></a>
                             <ul class="dropdown">
                               <li><a href="#profile">Profile</a></li>
                               <li><a href="#games">Games</a></li>
@@ -83,6 +83,7 @@
         <script src="./plugins/angular/angular-sanitize.min.js"></script>
         <script src="./plugins/foundation/js/foundation.min.js"></script>
         <script src="./plugins/foundation/js/foundation/foundation.equalizer.js"></script>
+        <script src="./plugins/foundation/js/foundation/foundation.alert.js"></script>
         <script src="./javascripts/main.js"></script>
         <script src="./javascripts/app.js"></script>
         <script src="./javascripts/controllers/GamesCtrl.js"></script>

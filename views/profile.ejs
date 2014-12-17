@@ -1,11 +1,16 @@
 <!-- show any messages from flash-message -->
 <% if (message.length > 0) { %>
-    <div class="alert alert-danger"><%= message %></div>
+	<div data-alert class="alert-box success radius">
+	  <%= message %>
+	</div>
 <% } %>
 
 <h1>Profile</h1>
 
-<img src='<%= user.avatar %>' alt='Avatar' />
+<div class="profile-picture">
+	<img src='<%= user.avatar %>?s=400' alt='Avatar' />
+	<p>This image comes from <a href="http://gravatar.com" target="_blank">Gravatar</a>, please <a href="./gravatar" target="_self">click here</a> if you want to refresh it</p>
+</div>
 
 <ul class="profile-content">
 	<li class="profile-item">
@@ -15,3 +20,4 @@
 		<p class="title">Email</p><p class="username"><%= user.local.email %></p>
 	</li>
 </ul>
+

@@ -18,7 +18,7 @@ app.config(function($routeProvider, $httpProvider){
         .when('/signup', {templateUrl: '/signup'})
         .when('/login', {templateUrl: '/login'})
         .when('/forgot', {templateUrl: '/forgot'})
-        .when('/reset/:token', {templateUrl: '/reset/:token'})
+        .when('/reset/:token', {templateUrl: '/partials/resetbinder.html', controller: ResetCtrl})
         .otherwise({redirectTo: '/'});
     delete $httpProvider.defaults.headers.common['X-Requested-With'];
     delete $httpProvider.defaults.headers.common['Content-Type'];
@@ -57,7 +57,6 @@ function ContactCtrl($rootScope, $http) {
     $rootScope.header = "Contact"; 
 }
 
-function LogOutCtrl($rootScope, $http) { 
-    $('html,body').animate({scrollTop: 0});
-    $rootScope.header = "Contact"; 
-}
+function ResetCtrl($scope, $routeParams) {
+        $scope.templateUrl = '/reset/'+$routeParams.token;
+    }

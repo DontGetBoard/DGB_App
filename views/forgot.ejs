@@ -1,16 +1,29 @@
- <h1>Forgot your password</h1>
 
-    <!-- show any messages from flash-message -->
-    <% if (message.length > 0) { %>
-        <div class="alert alert-danger"><%= message %></div>
-    <% } %>
+<div class="row">
+    <div class="large-12 columns">
+        <h1>Forgot your password?</h1>
+    </div>
+</div>
 
-	<form action="/forgot" method="post">
-	  <legend>Forgot Password</legend>
-	  <div class="form-group">
-	    <label for="email">Email</label>
-	    <input type="text" name="email" autofocus="autofocus" class="form-control"/>
-	    <input type="hidden" class="form-control" name="password">
-	  </div>
-	  <button type="submit" class="btn btn-primary">Reset Password</button>
-	</form>
+<div class="row">
+    <div class="large-12 columns">
+        <!-- show any messages from flash-message -->
+        <% if (message.length > 0) { %>
+            <div data-alert class="alert-box alert radius">
+              <%= message %>
+            </div>
+        <% } %>
+	
+		<p>Please enter your email, we will send you a reset link.</p>
+
+		<!--  Forgot my password form -->
+		<form action="/forgot" method="post">
+		  <div class="form-group">
+		    <label for="email">Email</label>
+		    <input type="text" name="email" autofocus="autofocus" class="form-control"/>
+		    <input type="hidden" class="form-control" name="password">
+		  </div>
+		  <button type="submit" class="btn btn-primary">Reset Password</button>
+		</form>
+	</div>
+</div>

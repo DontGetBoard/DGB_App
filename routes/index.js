@@ -1,14 +1,13 @@
-var express = require('express');
-var router = express.Router();
-var mongoose = require('mongoose');
-var passport = require('passport');
-var async = require('async');
-var crypto = require('crypto');
-var mailgun         = require('mailgun-js')({apiKey: process.env.DGB_MAILGUN_API_KEY, domain: process.env.DGB_MAILGUN_DOMAIN});
-var User = mongoose.model('User');
-var Game = mongoose.model('Game');
+var express       = require('express');
+var router        = express.Router();
+var mongoose      = require('mongoose');
+var passport      = require('passport');
+var async         = require('async');
+var crypto        = require('crypto');
+var mailgun       = require('mailgun-js')({apiKey: process.env.DGB_MAILGUN_API_KEY, domain: process.env.DGB_MAILGUN_DOMAIN});
+var User          = mongoose.model('User');
+var Game          = mongoose.model('Game');
 
-var avatar;
 
 /* GET home page. */
 router.get('/', function(req, res) {
@@ -93,7 +92,7 @@ router.post('/forgot', function(req, res){
       User.findOne({ 'local.email': req.body.email }, function(err, user) {
         if (!user) {
           req.flash('forgotMessage', 'No account with that email address exists.');
-          return res.redirect('/forgot');
+          return res.redirect('/#/forgot');
         }
 
         user.local.resetPasswordToken = token;
@@ -112,7 +111,7 @@ router.post('/forgot', function(req, res){
         subject: 'Password Reset',
         text: 'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
           'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
-          'http://' + req.headers.host + '/reset/' + token + '\n\n' +
+          'http://' + req.headers.host + '/#/reset/' + token + '\n\n' +
           'If you did not request this, please ignore this email and your password will remain unchanged.\n'
       };
 
@@ -134,11 +133,15 @@ router.get('/reset/:token', function(req, res) {
   User.findOne({ 'local.resetPasswordToken': req.params.token, 'local.resetPasswordExpires': { $gt: Date.now() } }, function(err, user) {
     if (!user) {
       req.flash('forgotMessage', 'Password reset token is invalid or has expired.');
-      return res.redirect('/#/forgot');
+      res.render('forgot', {
+        message: req.flash('forgotMessage')
+      });
+    }else{
+      res.render('reset', {
+        message: req.flash('resetMessage'),
+        token: req.params.token
+      });
     }
-    res.render('reset', {
-      message: req.flash('resetMessage')
-    });
   });
 });
 
@@ -153,7 +156,12 @@ router.post('/reset/:token', function(req, res) {
 
         if (req.body.password != req.body.confirm) {
           req.flash('resetMessage', 'Password confirmation doesn\'t match.');
-          return res.redirect('/reset/'+req.params.token);
+          return res.redirect('/#/reset/'+req.params.token);
+        }
+
+        if (req.body.password == '') {
+          req.flash('resetMessage', 'Password can\'t be empty!');
+          return res.redirect('/#/reset/'+req.params.token);
         }
 
         user.local.password = user.generateHash(req.body.password);
@@ -161,7 +169,9 @@ router.post('/reset/:token', function(req, res) {
         user.local.resetPasswordExpires = undefined;
 
         user.save(function(err) {
-          done(err, user);
+          req.logIn(user, function(err) {
+            done(err, user);
+          });
         });
       });
     },
@@ -179,7 +189,7 @@ router.post('/reset/:token', function(req, res) {
         console.log(body);
         console.log(error);
         req.flash('loginMessage', 'Password has been changed!')
-        res.redirect('/#/login');
+        res.redirect('/');
       });
     }
   ], function(err) {
