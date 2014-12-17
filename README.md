@@ -28,10 +28,14 @@ You must have `npm` and `mongod` to run this application.
 Environments Variables
 ----------------------
 
-- DGB_APP_NEW_RELIC_KEY => New Relic Api Key
-- DGB_MAILGUN_API_KEY => MailGun API Key
-- DGB_MAILGUN_DOMAIN => MailGun API Domain
-- DGB_PASSPORT_SECRET => Secret Passphrase to generate Hashes
+| Variable  | Usage |
+|---------|------|
+| DGB_APP_NEW_RELIC_KEY | New Relic Api Key     |
+| DGB_MAILGUN_API_KEY        | MailGun API Key     |
+| DGB_MAILGUN_DOMAIN        | MailGun API Domain     |
+| DGB_PASSPORT_SECRET        | Secret Passphrase to generate Hashes     |
+| DGB_MAILCHIMP_API_KEY        | MailChimp API Key     |
+| DGB_MAILCHIMP_LIST_ID        | MailChimp List ID     |
 
 
 Installation
