@@ -9,7 +9,11 @@ var User          = mongoose.model('User');
 var Game          = mongoose.model('Game');
 
 
-/* GET home page. */
+//  
+// Root Route
+//
+
+// GET home page
 router.get('/', function(req, res) {
   if(req.isAuthenticated()){
     res.render('index', {authenticated: 1, user: req.user }); 
@@ -19,24 +23,62 @@ router.get('/', function(req, res) {
   
 });
 
-/* GET profile page. */
+//  
+// Pages Routes
+//
+
+// GET profile page
 router.get('/profile', isLoggedIn, function(req, res) {
   res.render('profile', {message: req.flash('profileMessage'), user: req.user});
 });
 
-/* GET games page. */
+// GET games page
 router.get('/games', isLoggedIn, function(req, res) {
   res.render('games');
 });
 
-/* GET nights page. */
+// GET nights page
 router.get('/nights', isLoggedIn, function(req, res) {
   res.render('nights');
 });
 
 
 //
-// Login Routes
+// API
+//
+
+// GET Games JSON
+router.get('/api/games', function(req, res, next) {
+  Game.find(function(err, games){
+    if(err){ return next(err); }
+
+    res.json(games);
+  });
+});
+
+// Query Game by ID
+router.param('game', function(req, res, next, id) {
+  var query = Game.findById(id);
+
+  query.exec(function (err, game){
+    if (err) { return next(err); }
+    if (!game) { return next(new Error("can't find post")); }
+
+    req.game = game;
+    return next();
+  });
+});
+
+// GET Game by ID JSON
+router.get('/api/games/:game', function(req, res) {
+  //req.post.populate('comments', function(err, post) {
+    res.json(req.game);
+  //});
+});
+
+
+//
+// Authentication Routes
 //
 
 // GET login page
@@ -71,7 +113,7 @@ router.get('/logout', function(req, res) {
     res.redirect('/');
 });
 
-// GET Forgot
+// GET Forgot page
 router.get('/forgot', function(req, res) {
   res.render('forgot', {
     user: req.user,
@@ -128,7 +170,7 @@ router.post('/forgot', function(req, res){
   });
 });
 
-// GET Reset with token route
+// GET Reset Page with token
 router.get('/reset/:token', function(req, res) {
   User.findOne({ 'local.resetPasswordToken': req.params.token, 'local.resetPasswordExpires': { $gt: Date.now() } }, function(err, user) {
     if (!user) {
@@ -145,6 +187,7 @@ router.get('/reset/:token', function(req, res) {
   });
 });
 
+// POST Reset Form with token
 router.post('/reset/:token', function(req, res) {
   async.waterfall([
     function(done) {
@@ -197,39 +240,6 @@ router.post('/reset/:token', function(req, res) {
   });
 });
 
-
-//
-// API
-//
-
-/* GET Games JSON. */
-router.get('/api/games', function(req, res, next) {
-  Game.find(function(err, games){
-    if(err){ return next(err); }
-
-    res.json(games);
-  });
-});
-
-/* Query Game by ID. */
-router.param('game', function(req, res, next, id) {
-  var query = Game.findById(id);
-
-  query.exec(function (err, game){
-    if (err) { return next(err); }
-    if (!game) { return next(new Error("can't find post")); }
-
-    req.game = game;
-    return next();
-  });
-});
-
-/* GET Game by ID JSON. */
-router.get('/api/games/:game', function(req, res) {
-  //req.post.populate('comments', function(err, post) {
-    res.json(req.game);
-  //});
-});
 
 // Function to check if a user is loggedIn
 function isLoggedIn(req, res, next) {
