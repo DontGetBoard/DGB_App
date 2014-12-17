@@ -1,3 +1,17 @@
-<h1>Profile logged</h1>
+<!-- show any messages from flash-message -->
+<% if (message.length > 0) { %>
+    <div class="alert alert-danger"><%= message %></div>
+<% } %>
 
-<img src='<%= avatar %>' alt='Avatar' />
+<h1>Profile</h1>
+
+<img src='<%= user.avatar %>' alt='Avatar' />
+
+<ul class="profile-content">
+	<li class="profile-item">
+		<p class="title">Username</p><p class="username"><%= user.local.username %></p>
+	</li>
+	<li class="profile-item">
+		<p class="title">Email</p><p class="username"><%= user.local.email %></p>
+	</li>
+</ul>

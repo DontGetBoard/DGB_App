@@ -17,6 +17,8 @@ app.config(function($routeProvider, $httpProvider){
         .when('/contact', {templateUrl: 'partials/contact.html', controller: ContactCtrl})
         .when('/signup', {templateUrl: '/signup'})
         .when('/login', {templateUrl: '/login'})
+        .when('/forgot', {templateUrl: '/forgot'})
+        .when('/reset/:token', {templateUrl: '/reset/:token'})
         .otherwise({redirectTo: '/'});
     delete $httpProvider.defaults.headers.common['X-Requested-With'];
     delete $httpProvider.defaults.headers.common['Content-Type'];

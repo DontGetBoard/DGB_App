@@ -1,0 +1,16 @@
+ <h1>Forgot your password</h1>
+
+    <!-- show any messages from flash-message -->
+    <% if (message.length > 0) { %>
+        <div class="alert alert-danger"><%= message %></div>
+    <% } %>
+
+	<form action="/forgot" method="post">
+	  <legend>Forgot Password</legend>
+	  <div class="form-group">
+	    <label for="email">Email</label>
+	    <input type="text" name="email" autofocus="autofocus" class="form-control"/>
+	    <input type="hidden" class="form-control" name="password">
+	  </div>
+	  <button type="submit" class="btn btn-primary">Reset Password</button>
+	</form>
