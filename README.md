@@ -17,7 +17,7 @@
                       \/___/  \/___/  \/__/\/_/ \/_/ \/_____/
                       
                       
-                                               
+[![Codacy Badge](https://www.codacy.com/project/badge/5d2f0a877ddc4f7f8299129b1873a6d6)](https://www.codacy.com/public/sat/DGB_App)
                                                
 Requirements
 ------------
