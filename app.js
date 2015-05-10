@@ -1,6 +1,7 @@
 require('newrelic');
 
 var express         = require('express');
+var config          = require('config');
 var path            = require('path');
 var favicon         = require('serve-favicon');
 var logger          = require('morgan');
@@ -10,20 +11,26 @@ var mongoose        = require('mongoose');
 var passport        = require('passport');
 var flash           = require('connect-flash');
 var session         = require('express-session');
-var mailgun         = require('mailgun-js')({apiKey: process.env.DGB_MAILGUN_API_KEY, domain: process.env.DGB_MAILGUN_DOMAIN});
+var mailgun         = require('mailgun-js')({
+  apiKey: process.env.DGB_MAILGUN_API_KEY,
+  domain: process.env.DGB_MAILGUN_DOMAIN
+});
 var mcAPI           = require('mailchimp-api');
 var mc              = new mcAPI.Mailchimp(process.env.DGB_MAILCHIMP_API_KEY);
 var gravatar        = require('nodejs-gravatar');
+
+
+var herokuAwake     = require('./src/resources/herokuAwake');
+
 
 // All MongoDB Related Stuff
 var app = express();
 
 if (app.get('env') === 'development') {
-    mongoose.connect('mongodb://localhost/dontgetboard');
-}else{
-    mongo_url = process.env.OPENSHIFT_MONGODB_DB_URL;
-    mongo_app_name = process.env.OPENSHIFT_APP_NAME;
-    mongoose.connect(mongo_url+mongo_app_name);
+  mongoose.connect('mongodb://localhost/dontgetboard');
+} else {
+  var mongo_url = process.env.MONGOLAB_URI;
+  mongoose.connect(mongo_url);
 }
 require('./models/Games');
 require('./models/Users');
@@ -55,10 +62,10 @@ app.use(flash()); // use connect-flash for flash messages stored in session
 app.use('/', routes);
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
-    var err = new Error('Not Found');
-    err.status = 404;
-    next(err);
+app.use(function (req, res, next) {
+  var err = new Error('Not Found');
+  err.status = 404;
+  next(err);
 });
 
 // error handlers
@@ -66,24 +73,34 @@ app.use(function(req, res, next) {
 // development error handler
 // will print stacktrace
 if (app.get('env') === 'development') {
-    app.use(function(err, req, res, next) {
-        res.status(err.status || 500);
-        res.render('error', {
-            message: err.message,
-            error: err
-        });
+  app.use(function (err, req, res, next) {
+    res.status(err.status || 500);
+    res.render('error', {
+      message: err.message,
+      error: err
     });
+  });
 }
 
 // production error handler
 // no stacktraces leaked to user
-app.use(function(err, req, res, next) {
-    res.status(err.status || 500);
-    res.render('error', {
-        message: err.message,
-        error: {}
-    });
+app.use(function (err, req, res, next) {
+  res.status(err.status || 500);
+  res.render('error', {
+    message: err.message,
+    error: {}
+  });
 });
 
+/*
+  Server
+ */
+var http = app.listen(config.httpPort, function () {
+  var port = http.address().port;
+  logger.info({
+    port: port,
+    state: 'http server started!'
+  });
+});
 
-module.exports = app;
+herokuAwake('dont-get-board');
