@@ -6,9 +6,13 @@ var redisUrl = require('redis-url');
 
 module.exports = function (session) {
   var RedisStore = connectRedis(session);
-  var options = redisUrl.parse(config.redisSession.url);
+  var redisParsedUrl = redisUrl.parse(config.redisSession.url);
 
-  console.log(options);
+  var options = {
+    host : redisParsedUrl.hostname,
+    port : redisParsedUrl.port,
+    pass : redisParsedUrl.password
+  };
 
   return new RedisStore(options);
 };

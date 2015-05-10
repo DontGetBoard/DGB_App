@@ -38,10 +38,13 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'src/public')));
 
-redisSession(session);
+var redisSessionStorage = redisSession(session);
 
 // required for passport
-app.use(session({ secret : config.session.secret }));
+app.use(session({
+  store  : redisSessionStorage,
+  secret : config.session.secret
+}));
 
 app.use(passport.initialize());
 app.use(passport.session());
