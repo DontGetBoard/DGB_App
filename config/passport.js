@@ -1,4 +1,4 @@
-// config/passport.js
+'use strict';
 
 // load all the things we need
 var LocalStrategy   = require('passport-local').Strategy;
@@ -7,168 +7,191 @@ var LocalStrategy   = require('passport-local').Strategy;
 var User            = require('../src/models/Users');
 
 // expose this function to our app using module.exports
-module.exports = function(passport,mailgun,mc,gravatar) {
+module.exports = function (passport, mailgun, mc, gravatar) {
 
-    // =========================================================================
-    // passport session setup ==================================================
-    // =========================================================================
-    // required for persistent login sessions
-    // passport needs ability to serialize and unserialize users out of session
+  // =========================================================================
+  // passport session setup ==================================================
+  // =========================================================================
+  // required for persistent login sessions
+  // passport needs ability to serialize and unserialize users out of session
 
-    // used to serialize the user for the session
-    passport.serializeUser(function(user, done) {
-        done(null, user.id);
+  // used to serialize the user for the session
+  passport.serializeUser(function (user, done) {
+    done(null, user.id);
+  });
+
+  // used to deserialize the user
+  passport.deserializeUser(function (id, done) {
+    User.findById(id, function (err, user) {
+      done(err, user);
     });
+  });
 
-    // used to deserialize the user
-    passport.deserializeUser(function(id, done) {
-        User.findById(id, function(err, user) {
-            done(err, user);
-        });
-    });
+  // =========================================================================
+  // LOCAL SIGNUP ============================================================
+  // =========================================================================
+  passport.use('local-signup', new LocalStrategy({
+      usernameField : 'email',
+      passwordField : 'password',
+      passReqToCallback : true
+  },
+  function (req, email, password, done) {
 
-    // =========================================================================
-    // LOCAL SIGNUP ============================================================
-    // =========================================================================
-    passport.use('local-signup', new LocalStrategy({
-        // by default, local strategy uses username and password, we will override with email
-        usernameField : 'email',
-        passwordField : 'password',
-        passReqToCallback : true // allows us to pass back the entire request to the callback
-    },
-    function(req, email, password, done) {
+    // asynchronous
+    // User.findOne wont fire unless data is sent back
+    process.nextTick(function () {
 
-        // asynchronous
-        // User.findOne wont fire unless data is sent back
-        process.nextTick(function() {
+      // find a user whose email is the same as the forms email
+      // we are checking to see if the user trying to login already exists
+      User.findOne({ 'local.email' :  email }, function (err, user) {
+        // if there are any errors, return the error
+        if (err) {
 
-        // find a user whose email is the same as the forms email
-        // we are checking to see if the user trying to login already exists
-        User.findOne({ 'local.email' :  email }, function(err, user) {
-            // if there are any errors, return the error
-            if (err)
-                return done(err);
+          return done(err);
+        }
 
-            // check to see if theres already a user with that email
-            if (user) {
-                return done(null, false, req.flash('signupMessage', 'That email is already taken.'));
-            } else {
+        // check to see if theres already a user with that email
+        if (user) {
 
-                // if there is no user with that email
-                // create the user
-                var newUser            = new User();
+          return done(
+            null,
+            false,
+            req.flash('signupMessage', 'That email is already taken.')
+          );
+        } else {
 
-                // set the user's local credentials
-                newUser.avatar         = gravatar.imageUrl(email);
-                newUser.local.email    = email;
-                newUser.local.password = newUser.generateHash(password);
-                newUser.local.username = req.body.username;
+          // if there is no user with that email
+          // create the user
+          var newUser            = new User();
 
-                // save the user
-                newUser.save(function(err) {
-                    if (err)
-                        throw err;
+          // set the user's local credentials
+          newUser.avatar         = gravatar.imageUrl(email);
+          newUser.local.email    = email;
+          newUser.local.password = newUser.generateHash(password);
+          newUser.local.username = req.body.username;
 
-                    // Sending Welcome Email
-                    var data = {
-                      from: 'Don\'t get board <no-reply@mg.dontgetboard.net>',
-                      to: email,
-                      subject: 'Hello',
-                      text: 'Welcome to DGB!'
-                    };
+          // save the user
+          newUser.save(function (err) {
+            if (err) {
 
-                    mailgun.messages().send(data, function (error, body) {
-                      console.log(body);
-                      console.log(error);
-                    });
-
-                    // Subscribe to Newsletter
-                    var mcReq = {
-                        id: process.env.DGB_MAILCHIMP_LIST_ID,
-                        email: { email: email },
-                        merge_vars: {
-                            UNAME: req.body.username
-                        }
-                    };
-
-                    // submit subscription request to Mailchimp
-                    mc.lists.subscribe(mcReq, function(data) {
-                        console.log(data);
-                    }, function(error) {
-                        console.log(error);
-                    });
-
-                    return done(null, newUser);
-                });
+              throw err;
             }
 
-        });
+            // Sending Welcome Email
+            var data = {
+              from: 'Don\'t get board <no-reply@mg.dontgetboard.net>',
+              to: email,
+              subject: 'Hello',
+              text: 'Welcome to DGB!'
+            };
 
-        });
+            mailgun.messages().send(data, function (error, body) {
+              console.log(body);
+              console.log(error);
+            });
 
-    }));
+            // Subscribe to Newsletter
+            var mcReq = {
+                id: process.env.DGB_MAILCHIMP_LIST_ID,
+                email: { email: email },
+                merge_vars: {
+                    UNAME: req.body.username
+                }
+            };
 
-    // =========================================================================
-    // LOCAL LOGIN =============================================================
-    // =========================================================================
-    passport.use('local-login', new LocalStrategy({
-        usernameField : 'email',
-        passwordField : 'password',
-        passReqToCallback : true // allows us to pass back the entire request to the callback
-    },
-    function(req, email, password, done) { // callback with email and password from our form
+            // submit subscription request to Mailchimp
+            mc.lists.subscribe(mcReq, function (data) {
+              console.log(data);
+            }, function (error) {
+              console.log(error);
+            });
 
-        // find a user whose email is the same as the forms email
-        // we are checking to see if the user trying to login already exists
-        User.findOne({ 'local.email' :  email }, function(err, user) {
-            // if there are any errors, return the error before anything else
-            if (err)
-                return done(err);
+            return done(null, newUser);
+          });
+        }
 
-            // if no user is found, return the message
-            if (!user)
-                return done(null, false, req.flash('loginMessage', 'No user found.')); // req.flash is the way to set flashdata using connect-flash
+      });
 
-            // if the user is found but the password is wrong
-            if (!user.validPassword(password))
-                return done(null, false, req.flash('loginMessage', 'Oops! Wrong password.')); // create the loginMessage and save it to session as flashdata
+    });
 
-            // all is well, return successful user
-            return done(null, user);
-        });
+  }));
 
-    }));
+  // =========================================================================
+  // LOCAL LOGIN =============================================================
+  // =========================================================================
+  passport.use('local-login', new LocalStrategy({
+      usernameField : 'email',
+      passwordField : 'password',
+      passReqToCallback : true
+  },
+  function (req, email, password, done) {
 
-    // =========================================================================
-    // LOCAL Forgot Password ===================================================
-    // =========================================================================
-    passport.use('local-forgot', new LocalStrategy({
-        usernameField : 'email',
-        passwordField : 'password',
-        passReqToCallback : true
-    },
-    function(req, email, password, done) {
+    // find a user whose email is the same as the forms email
+    // we are checking to see if the user trying to login already exists
+    User.findOne({ 'local.email' :  email }, function (err, user) {
+      // if there are any errors, return the error before anything else
+      if (err) {
 
-        console.log('OK');
+        return done(err);
+      }
 
-        // find a user whose email is the same as the forms email
-        // we are checking to see if the user trying to login already exists
-        User.findOne({ 'local.email' :  email }, function(err, user) {
-            // if there are any errors, return the error before anything else
-            if (err)
-                console.log(err);
-                return done(err);
+      // if no user is found, return the message
+      if (!user) {
 
-            // if no user is found, return the message
-            if (!user)
-                console.log('pas user');
-                return done(null, false, req.flash('forgotMessage', 'No user found.')); // req.flash is the way to set flashdata using connect-flash
+        return done(
+          null,
+          false,
+          req.flash('loginMessage', 'No user found.')
+        );
+      }
 
-            console.log(user);
-            return done(null, user);
-        });
+      // if the user is found but the password is wrong
+      if (!user.validPassword(password)) {
 
-    }));
+        return done(
+          null,
+          false,
+          req.flash('loginMessage', 'Oops! Wrong password.')
+        );
+      }
+
+      // all is well, return successful user
+      return done(null, user);
+    });
+
+  }));
+
+  // =========================================================================
+  // LOCAL Forgot Password ===================================================
+  // =========================================================================
+  passport.use('local-forgot', new LocalStrategy({
+      usernameField : 'email',
+      passwordField : 'password',
+      passReqToCallback : true
+  },
+  function (req, email, password, done) {
+
+    // find a user whose email is the same as the forms email
+    // we are checking to see if the user trying to login already exists
+    User.findOne({ 'local.email' :  email }, function (err, user) {
+      // if there are any errors, return the error before anything else
+      if (err) {
+        return done(err);
+      }
+
+      // if no user is found, return the message
+      if (!user) {
+        return done(
+          null,
+          false,
+          req.flash('forgotMessage', 'No user found.')
+        );
+      }
+
+      return done(null, user);
+    });
+
+  }));
 
 };
 

@@ -9,7 +9,6 @@ var favicon         = require('serve-favicon');
 var logger          = require('./src/resources/logger');
 var cookieParser    = require('cookie-parser');
 var bodyParser      = require('body-parser');
-var mongoose        = require('mongoose');
 var passport        = require('passport');
 var flash           = require('connect-flash');
 var session         = require('express-session');
@@ -21,15 +20,14 @@ var mcAPI           = require('mailchimp-api');
 var mc              = new mcAPI.Mailchimp(process.env.DGB_MAILCHIMP_API_KEY);
 var gravatar        = require('nodejs-gravatar');
 
-
 var herokuAwake     = require('./src/resources/herokuAwake');
 
 
 // All MongoDB Related Stuff
 var app = express();
 
-mongoose.connect(config.mongoDb.uri);
-
+// Init DB and Models
+require('./src/resources/mongooseInit');
 require('./src/models/Games');
 require('./src/models/Users');
 

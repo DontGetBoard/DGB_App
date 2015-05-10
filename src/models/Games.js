@@ -1,3 +1,5 @@
+'use strict';
+
 var mongoose = require('mongoose');
 
 var GameSchema = new mongoose.Schema({
@@ -9,8 +11,8 @@ var GameSchema = new mongoose.Schema({
   max_players: {type: Number, default: 0},
   can_bring_to_night: {type: Number, default: 0},
   details: {
-  	large_pictures: [{ src: String }],
-	description: String,
+    large_pictures: [{ src: String }],
+    description: String
   },
   upvotes: {type: Number, default: 0},
   downvotes: {type: Number, default: 0}
