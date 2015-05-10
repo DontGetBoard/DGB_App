@@ -6,10 +6,7 @@ var mongoose      = require('mongoose');
 var passport      = require('passport');
 var async         = require('async');
 var crypto        = require('crypto');
-var mailgun       = require('mailgun-js')({
-  apiKey: process.env.DGB_MAILGUN_API_KEY,
-  domain: process.env.DGB_MAILGUN_DOMAIN}
-);
+var mailgun       = require('../resources/mailGun');
 var User          = mongoose.model('User');
 var Game          = mongoose.model('Game');
 

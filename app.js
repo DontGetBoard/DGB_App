@@ -22,8 +22,6 @@ var app = express();
 
 // Init DB and Models
 require('./src/resources/mongooseInit');
-require('./src/models/Games');
-require('./src/models/Users');
 
 require('./config/passport')(passport, gravatar);
 
