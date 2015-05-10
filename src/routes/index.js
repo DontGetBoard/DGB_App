@@ -100,9 +100,9 @@ router.get('/login', function (req, res) {
 
 // POST login form
 router.post('/login', passport.authenticate('local-login', {
-    successRedirect : '/',
-    failureRedirect : '/#/login',
-    failureFlash : true
+  successRedirect : '/',
+  failureRedirect : '/#/login',
+  failureFlash : true
 }));
 
 // GET Signup page

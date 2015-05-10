@@ -36,3 +36,5 @@ config/development.yml
 data.csv
 
 uploads/*
+
+src/public/plugins/*

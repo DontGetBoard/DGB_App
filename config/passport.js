@@ -38,11 +38,10 @@ module.exports = function (passport, gravatar) {
   // LOCAL SIGNUP ============================================================
   // =========================================================================
   passport.use('local-signup', new LocalStrategy({
-      usernameField : 'email',
-      passwordField : 'password',
-      passReqToCallback : true
-  },
-  function (req, email, password, done) {
+    usernameField : 'email',
+    passwordField : 'password',
+    passReqToCallback : true
+  }, function (req, email, password, done) {
 
     // asynchronous
     // User.findOne wont fire unless data is sent back
@@ -81,7 +80,7 @@ module.exports = function (passport, gravatar) {
           newUser.save(function (err) {
             if (err) {
 
-              throw err;
+              return done(err);
             }
 
             // Sending Welcome Email
@@ -130,8 +129,7 @@ module.exports = function (passport, gravatar) {
       usernameField : 'email',
       passwordField : 'password',
       passReqToCallback : true
-  },
-  function (req, email, password, done) {
+  }, function (req, email, password, done) {
 
     // find a user whose email is the same as the forms email
     // we are checking to see if the user trying to login already exists
@@ -141,6 +139,9 @@ module.exports = function (passport, gravatar) {
 
         return done(err);
       }
+
+      console.log(err);
+      console.log(user);
 
       // if no user is found, return the message
       if (!user) {
