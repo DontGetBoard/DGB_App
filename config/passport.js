@@ -3,11 +3,14 @@
 // load all the things we need
 var LocalStrategy   = require('passport-local').Strategy;
 
+// Resources
+var mailGun = require('../src/resources/mailGun');
+
 // load up the user model
 var User            = require('../src/models/Users');
 
 // expose this function to our app using module.exports
-module.exports = function (passport, mailgun, mc, gravatar) {
+module.exports = function (passport, mc, gravatar) {
 
   // =========================================================================
   // passport session setup ==================================================
@@ -85,7 +88,7 @@ module.exports = function (passport, mailgun, mc, gravatar) {
               text: 'Welcome to DGB!'
             };
 
-            mailgun.messages().send(data, function (error, body) {
+            mailGun.messages().send(data, function (error, body) {
               console.log(body);
               console.log(error);
             });

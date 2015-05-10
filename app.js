@@ -12,10 +12,6 @@ var bodyParser      = require('body-parser');
 var passport        = require('passport');
 var flash           = require('connect-flash');
 var session         = require('express-session');
-var mailgun         = require('mailgun-js')({
-  apiKey: process.env.DGB_MAILGUN_API_KEY,
-  domain: process.env.DGB_MAILGUN_DOMAIN
-});
 var mcAPI           = require('mailchimp-api');
 var mc              = new mcAPI.Mailchimp(process.env.DGB_MAILCHIMP_API_KEY);
 var gravatar        = require('nodejs-gravatar');
