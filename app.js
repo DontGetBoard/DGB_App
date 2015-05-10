@@ -1,3 +1,5 @@
+'use strict';
+
 require('newrelic');
 
 var express         = require('express');
@@ -35,7 +37,7 @@ if (app.get('env') === 'development') {
 require('./models/Games');
 require('./models/Users');
 
-require('./config/passport')(passport,mailgun,mc,gravatar); // pass passport for configuration
+require('./config/passport')(passport, mailgun, mc, gravatar);
 
 var routes = require('./routes/index');
 
