@@ -140,9 +140,6 @@ module.exports = function (passport, gravatar) {
         return done(err);
       }
 
-      console.log(err);
-      console.log(user);
-
       // if no user is found, return the message
       if (!user) {
 

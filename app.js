@@ -21,7 +21,7 @@ var herokuAwake     = require('./src/resources/herokuAwake');
 var app = express();
 
 // Init DB and Models
-require('./src/resources/mongooseInit');
+require('./src/resources/mongooseInit')();
 
 require('./config/passport')(passport, gravatar);
 
