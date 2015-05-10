@@ -1,7 +1,11 @@
-.centered{
+.centered {
   margin-left: auto;
   margin-right: auto;
-  width: 243px;
+  width: 300px;
+}
+
+.no-float{
+  float: none !important;
 }
 
 .button-no-padding{
@@ -69,7 +73,7 @@
 .item-box-desc p {
   margin-top:20px;
   display:block;
-  overflow:hidden; 
+  overflow:hidden;
   text-overflow:ellipsis;
   /*white-space: nowrap;*/
 }

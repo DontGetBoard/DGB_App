@@ -4,10 +4,10 @@ module.exports = {
   loggerName : 'dont-get-board',
   httpPort   : process.env.PORT || env.httpPort || 3000,
   session : {
-    secret : process.env.DGB_PASSPORT_SECRET || 'localhostsecret'
+    secret : process.env.DGB_PASSPORT_SECRET
   },
   mongoDb : {
-    uri : process.env.MONGOLAB_URI || 'mongodb://localhost/dontgetboard'
+    uri : process.env.MONGOLAB_URI
   },
   mailGun : {
     key : process.env.DGB_MAILGUN_API_KEY,
@@ -16,5 +16,8 @@ module.exports = {
   mailChimp : {
     key : process.env.DGB_MAILCHIMP_API_KEY,
     listId : process.env.DGB_MAILCHIMP_LIST_ID
+  },
+  redisSession : {
+    url: process.env.REDISCLOUD_URL
   }
 };

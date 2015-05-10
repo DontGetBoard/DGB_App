@@ -37,4 +37,6 @@ data.csv
 
 uploads/*
 
+config/*.json
+
 src/public/plugins/*

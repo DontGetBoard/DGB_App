@@ -15,7 +15,7 @@ var session         = require('express-session');
 var gravatar        = require('nodejs-gravatar');
 
 var herokuAwake     = require('./src/resources/herokuAwake');
-
+var redisSession    = require('./src/resources/redisSession');
 
 // All MongoDB Related Stuff
 var app = express();
@@ -38,11 +38,14 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'src/public')));
 
+redisSession(session);
+
 // required for passport
-app.use(session({ secret: config.session.secret })); // session secret
+app.use(session({ secret : config.session.secret }));
+
 app.use(passport.initialize());
-app.use(passport.session()); // persistent login sessions
-app.use(flash()); // use connect-flash for flash messages stored in session
+app.use(passport.session());
+app.use(flash());
 
 app.use('/', routes);
 
