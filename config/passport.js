@@ -4,7 +4,7 @@
 var LocalStrategy   = require('passport-local').Strategy;
 
 // load up the user model
-var User            = require('../models/Users');
+var User            = require('../src/models/Users');
 
 // expose this function to our app using module.exports
 module.exports = function(passport,mailgun,mc,gravatar) {
@@ -102,7 +102,7 @@ module.exports = function(passport,mailgun,mc,gravatar) {
                 });
             }
 
-        });    
+        });
 
         });
 
@@ -145,7 +145,7 @@ module.exports = function(passport,mailgun,mc,gravatar) {
     passport.use('local-forgot', new LocalStrategy({
         usernameField : 'email',
         passwordField : 'password',
-        passReqToCallback : true 
+        passReqToCallback : true
     },
     function(req, email, password, done) {
 

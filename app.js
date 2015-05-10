@@ -30,15 +30,15 @@ var app = express();
 
 mongoose.connect(config.mongoDb.uri);
 
-require('./models/Games');
-require('./models/Users');
+require('./src/models/Games');
+require('./src/models/Users');
 
 require('./config/passport')(passport, mailgun, mc, gravatar);
 
-var routes = require('./routes/index');
+var routes = require('./src/routes/index');
 
 // view engine setup
-app.set('views', path.join(__dirname, 'views'));
+app.set('views', path.join(__dirname, 'src/views'));
 app.set('view engine', 'ejs');
 
 // uncomment after placing your favicon in /public
@@ -46,7 +46,7 @@ app.set('view engine', 'ejs');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'src/public')));
 
 // required for passport
 app.use(session({ secret: config.session.secret })); // session secret
