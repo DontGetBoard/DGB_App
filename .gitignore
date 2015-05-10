@@ -26,4 +26,13 @@ build/Release
 # Commenting this out is preferred by some people, see
 # https://www.npmjs.org/doc/misc/npm-faq.html#should-i-check-my-node_modules-folder-into-git-
 node_modules
+bower_components
+assetsBuilds
 Workfiles
+.ebextensions
+Archive.zip
+
+config/development.yml
+data.csv
+
+uploads/*
