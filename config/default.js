@@ -1,5 +1,9 @@
 var env = process.env;
 
 module.exports = {
-  httpPort   : process.env.PORT || env.httpPort || 3000
+  loggerName : 'dont-get-board',
+  httpPort   : process.env.PORT || env.httpPort || 3000,
+  session : {
+    secret : process.env.DGB_PASSPORT_SECRET || 'localhostsecret'
+  }
 };

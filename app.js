@@ -6,7 +6,7 @@ var express         = require('express');
 var config          = require('config');
 var path            = require('path');
 var favicon         = require('serve-favicon');
-var logger          = require('morgan');
+var logger          = require('./src/resources/logger');
 var cookieParser    = require('cookie-parser');
 var bodyParser      = require('body-parser');
 var mongoose        = require('mongoose');
@@ -47,16 +47,13 @@ app.set('view engine', 'ejs');
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(__dirname + '/public/favicon.ico'));
-app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-console.log(process.env);
-
 // required for passport
-app.use(session({ secret: process.env.DGB_PASSPORT_SECRET })); // session secret
+app.use(session({ secret: config.session.secret })); // session secret
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 app.use(flash()); // use connect-flash for flash messages stored in session
