@@ -28,12 +28,8 @@ var herokuAwake     = require('./src/resources/herokuAwake');
 // All MongoDB Related Stuff
 var app = express();
 
-if (app.get('env') === 'development') {
-  mongoose.connect('mongodb://localhost/dontgetboard');
-} else {
-  var mongo_url = process.env.MONGOLAB_URI;
-  mongoose.connect(mongo_url);
-}
+mongoose.connect(config.mongoDb.uri);
+
 require('./models/Games');
 require('./models/Users');
 
