@@ -3,14 +3,18 @@
 // load all the things we need
 var LocalStrategy   = require('passport-local').Strategy;
 
+var config = require('config');
+
 // Resources
 var mailGun = require('../src/resources/mailGun');
+var mc      = require('../src/resources/mailChimp');
 
 // load up the user model
-var User            = require('../src/models/Users');
+var mongoose = require('mongoose');
+var User     = mongoose.model('User');
 
 // expose this function to our app using module.exports
-module.exports = function (passport, mc, gravatar) {
+module.exports = function (passport, gravatar) {
 
   // =========================================================================
   // passport session setup ==================================================
@@ -95,7 +99,7 @@ module.exports = function (passport, mc, gravatar) {
 
             // Subscribe to Newsletter
             var mcReq = {
-                id: process.env.DGB_MAILCHIMP_LIST_ID,
+                id: config.mailChimp.listId,
                 email: { email: email },
                 merge_vars: {
                     UNAME: req.body.username

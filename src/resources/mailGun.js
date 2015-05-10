@@ -1,8 +1,9 @@
 'use strict';
 
+var config = require('config');
 var mailgun         = require('mailgun-js')({
-  apiKey: process.env.DGB_MAILGUN_API_KEY,
-  domain: process.env.DGB_MAILGUN_DOMAIN
+  apiKey: config.mailGun.key,
+  domain: config.mailGun.domain
 });
 
 module.exports = mailgun;

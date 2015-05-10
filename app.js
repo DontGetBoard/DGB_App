@@ -12,8 +12,6 @@ var bodyParser      = require('body-parser');
 var passport        = require('passport');
 var flash           = require('connect-flash');
 var session         = require('express-session');
-var mcAPI           = require('mailchimp-api');
-var mc              = new mcAPI.Mailchimp(process.env.DGB_MAILCHIMP_API_KEY);
 var gravatar        = require('nodejs-gravatar');
 
 var herokuAwake     = require('./src/resources/herokuAwake');
@@ -27,7 +25,7 @@ require('./src/resources/mongooseInit');
 require('./src/models/Games');
 require('./src/models/Users');
 
-require('./config/passport')(passport, mailgun, mc, gravatar);
+require('./config/passport')(passport, gravatar);
 
 var routes = require('./src/routes/index');
 
